@@ -47,8 +47,8 @@ console.log(`더하기 결과 : ${output2}`);
 
 
 // 콜백함수
-function add3(a, b, c){
-    c(a + b) ;
+function add3(a, b, cal){
+    cal(a + b) ;
 }
 
 add3(10,10,(output) => {
