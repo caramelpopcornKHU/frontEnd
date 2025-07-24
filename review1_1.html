@@ -45,8 +45,15 @@
         <div id="output1">
             <!-- <p>결과</p> -->
         </div>
+
+        <div>
+            <img id="output2" src="images/cat_stand.png">
+        </div>
+
         
         <script>
+
+            let type = 1;
 
             function show()  {
                 console.log(`show 함수 호출`);
@@ -57,6 +64,19 @@
 
                 let output1 = document.querySelector('#output1');
                 output1.innerHTML = `<p>결과 : ${name}</p>`;
+
+                // 이미지 바꿔보기
+                let output2 = document.querySelector('#output2');
+                output2.src = 'images/dog_stand.png'
+
+
+                if(type==1){
+                    output2.src = 'images/cat_stand.png'
+                    type = 2;
+                } else if(type == 2){
+                    output2.src = 'images/dog_stand.png'
+                    type = 1;
+                }
             }
 
         </script>
