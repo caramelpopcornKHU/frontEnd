@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>과제 01 입장료 계산기 만들기 </h1>
+        <div>
+            <p>입장료 계산기</p>
+        </div>
+        <div id="output1">
+
+        </div>
+        <div>
+            <!-- 성인 수 입력 -->
+            <span>성인 수   </span>
+            <input type="number" id="inputAdult" value="0">
+            <span> 명</span>
+            <p></p>
+            <!-- 어린이 수 입력 -->
+            <span>어린이 수</span>
+            <input type="number" id="inputChild" value="0">
+            <span> 명</span>
+            <p></p>
+        </div>
+        <div>
+            <p></p>
+            <button onclick="show()">계산</button>
+            <p></p>
+            <!-- 가격 출력 -->
+            <span>입장료</span>
+                <!--<input type="text" id="outputFee" value="0">-->
+                <div id="outputFee"></div>
+            <span> 원</span>
+        </div>
+
+        <div class="image-container">
+            <!-- 계산 성공 시 표시될 이미지 (예: 웃는 얼굴) -->
+            <!-- 여기에 성공 이미지 파일 경로를 넣어주세요. 예: <img id="successImage" src="success.png" alt="성공"> -->
+            <img id="successImage" src="images\smileImg.png" alt="성공" style="display: none;">
+
+            <!-- 계산 실패 시 표시될 이미지 (예: 찡그린 얼굴) -->
+            <!-- 여기에 실패 이미지 파일 경로를 넣어주세요. 예: <img id="failureImage" src="failure.png" alt="실패"> -->
+            <img id="failureImage" src="images\sadImg.png" alt="실패" style="display: none;">
+        </div>
+
+
+
+        <div> <!-- 단체할인 여부 구분 -->
+            <span>단체할인</span>
+            <input type="radio" name="personDiscount" value="yes" checked><span>예</span>
+            <input type="radio" name="personDiscount" value="no"><span>아니요</span>
+            <p></p>
+        </div>
+
+        <div> <!-- 단체할인 + 가격 -->
+            <span>성인 1인당</span> <input type="number" id="adultFee"  value="0"> <span>원</span> <p></p>
+            <span>어린이 1인당</span> <input type="number" id="childFee" value="0"> <span>원</span> <p></p>
+            <span>단체 할인 : 5명 이상 20% </span>
+        </div>
+
+        <div> <!-- 야간할인 -->
+            <p>======야간 할인======</p>
+            <span>성인 1인당</span> <input type="number" id="adultNight" value="0"> <span>원</span> <p></p>
+            <span>어린이 1인당</span> <input type="number" id="childNight" value="0"> <span>원</span> <p></p>
+            <p>오후 6시부터 야간 할인이 적용됩니다.</p>
+        </div>
+
+        <div>
+            <h1>이벤트</h1>
+            <span>입장인원: 총</span><input type="number" id="eventPeopleNum" value="80"><span>명</span><p></p>
+            <button onclick="eventLotto()">추첨</button>
+            <p>===============당첨자===============</p>
+            <span id="eventNum1">n번 님</span><span>--=--</span><span id="eventNum2">n번 님</span><span>--=--</span>
+            <span id="eventNum3">n번 님</span><span>--=--</span><span id="eventNum4">n번 님</span><span>--=--</span>
+            <span id="eventNum5">n번 님</span><span>--=--</span><span id="eventNum6">n번 님</span>
+            <p>입장하시는 분들은 번호표를 받으세요.</p>
+            <p>여섯 분을 추첨하여 스타벅스 쿠폰을 드립니다.</p>
+        </div>
+
+
+        <!-- moment.js 라이브러리 파일이 이 HTML 파일과 같은 디렉토리에 있어야 합니다. -->
+        <!-- 만약 moment.js 파일이 없다면, https://momentjs.com/ 에서 다운로드하여 이 폴더에 넣어주세요. -->
+        <script src="moment.js"></script>
+        <script>
+
+            window.addEventListener('DOMContentLoaded', () => {
+                console.log(`DOMContentLoaded 이벤트 호출됨. `);
+
+                // 현재 시간 표시하기
+                let output1 = document.querySelector('#output1');
+                setInterval(() => {
+                    
+                    let curTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                    output1.innerHTML = `<p>${curTime}</p>`;
+
+                }, 1000) // 1000이니까 1초마다 보여줄게
+            })
+
+            function show(){
+                // 이미지 초기화
+                document.getElementById('successImage').style.display = 'none';
+                document.getElementById('failureImage').style.display = 'none';
+
+                let inputAdult = document.querySelector('#inputAdult'); // 성인 인원 수
+                let inputChild = document.querySelector('#inputChild'); // 어린이 인원 수
+                let adultFee = document.querySelector('#adultFee'); // 성인 가격
+                let childFee = document.querySelector('#childFee'); // 어린이 가격
+                let outputFee = document.querySelector('#outputFee'); // 최종가격
+
+                // Gemini의 도움 이렇게 값을 넘기면 좋더라 
+                const adultNightPrice = parseInt(document.getElementById('adultNight').value);
+                const childNightPrice = parseInt(document.getElementById('childNight').value);
+
+
+
+                // --- 유효성 검사 추가 시작 ---
+                // 입력값이 숫자인지 확인하고, 숫자가 아니면 경고창을 띄우고 실패 이미지를 표시
+                const adultCountVal = Number(inputAdult.value);
+                const childCountVal = Number(inputChild.value);
+                let adultFeeVal = Number(adultFee.value);
+                let childFeeVal = Number(childFee.value);
+
+                if (isNaN(adultCountVal) || isNaN(childCountVal) || isNaN(adultFeeVal) || isNaN(childFeeVal)|| isNaN(adultNightPrice) || isNaN(childNightPrice)) {
+                    alert('입력값이 숫자가 아닙니다. 숫자를 입력해주세요.');
+                    document.getElementById('failureImage').style.display = 'block'; // 실패 이미지 표시
+                    outputFee.innerText = '오류'; // 결과창에 오류 표시
+                    return; // 함수 실행 중단
+                }
+                // --- 유효성 검사 추가 끝 ---
+
+
+                // 3. 야간 할인 적용 여부 확인 (오후 6시 이후)
+                const now = new Date();
+                const currentHour = now.getHours();
+                const isNightTime = currentHour >= 18; // 오후 6시 (18시) 이후
+                if (isNightTime) {
+                 adultFeeVal = adultNightPrice;
+                 childFeeVal = childNightPrice;
+                }
+
+
+                let radios = document.getElementsByName('personDiscount');
+                let selected = Array.from(radios).find(elem => elem.checked);
+                console.log(`선택한 값 ${selected.value}`);
+
+                if(selected.value == 'yes'){
+                    //alert(`예가 선택되었어요.`);
+                    //5명 이상
+                    if(adultCountVal + childCountVal >= 5){
+                        let totalFee1 = adultCountVal * adultFeeVal +
+                                        childCountVal * childFeeVal ;
+                        
+                        let totalFee2 = totalFee1 * 0.8;
+                        console.log(`최종 가격: ${totalFee2}`);
+                        
+                        outputFee.innerText = totalFee2.toLocaleString(); // 숫자 포맷팅 추가
+                    } else{
+                        // 5명 미만
+                        let totalFee = adultCountVal * adultFeeVal +
+                                        childCountVal * childFeeVal;
+                        outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
+                    }
+
+                } else if(selected.value == 'no') {
+                    //alert(`아니오가 선택되었어요.`);
+                     let totalFee = adultCountVal * adultFeeVal +
+                            childCountVal * childFeeVal;
+                     outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
+
+                }
+
+
+                document.getElementById('successImage').style.display = 'block'; // 성공 이미지 표시
+
+            }
+
+            function eventLotto(){
+                // 1번~6번 당첨자용 <span> 칸 불러오기
+            
+                
+                let eventPeopleNum = document.querySelector('#eventPeopleNum');
+                let eventNum1 = document.querySelector('#eventNum1');
+                let eventNum2 = document.querySelector('#eventNum2');
+                let eventNum3 = document.querySelector('#eventNum3');
+                let eventNum4 = document.querySelector('#eventNum4');
+                let eventNum5 = document.querySelector('#eventNum5');
+                let eventNum6 = document.querySelector('#eventNum6');
+
+                // 이벤트 참여하는 사람의 수는 변하지 않으니까 const로 선언
+                const eventPeopleNumVal = Number(eventPeopleNum.value);
+
+                let numbers = [];
+
+                // 6명 뽑기
+                while(numbers.length < 6){
+                    // Math.random() = 0~1사이 값 곱하기 이벤트 참여 인원
+                    // floor는 소수점 버림 -> 만약 0.xx나오면 0이 뽑힘
+                    // 따라서, 1을 더해줘야함
+
+                    // rand라는 상자에 숫자뽑기
+                    let rand = Math.floor(Math.random() * eventPeopleNumVal) + 1;
+                    
+                    // 숫자 리스트에 rand로 뽑은 숫자가 있냐? includes
+                    // 없는거( ! )만 넣을게 -> push
+                    if(!numbers.includes(rand)){
+                        numbers.push(rand);
+                    }
+                }
+                
+                // sort 해보기
+
+                for(let i=0;i<numbers.length;i++){
+
+                }
+                
+
+
+                // 마지막 당첨자 표현
+                eventNum1.innerHTML = `<span>${numbers[0]}번님</span>`;
+                eventNum2.innerHTML = `<span>${numbers[1]}번님</span>`;
+                eventNum3.innerHTML = `<span>${numbers[2]}번님</span>`;
+                eventNum4.innerHTML = `<span>${numbers[3]}번님</span>`;
+                eventNum5.innerHTML = `<span>${numbers[4]}번님</span>`;
+                eventNum6.innerHTML = `<span>${numbers[5]}번님</span>`;
+            }
+        </script>
+
+
+    </body>
+</html>

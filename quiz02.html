@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>과제 01 입장료 계산기 만들기 </h1>
+        <div>
+            <p>입장료 계산기</p>
+        </div>
+        <div>
+            <!-- 성인 수 입력 -->
+            <span>성인 수   </span>
+            <input type="number" id="inputAdult" value="0">
+            <span> 명</span>
+            <p></p>
+            <!-- 어린이 수 입력 -->
+            <span>어린이 수</span>
+            <input type="number" id="inputChild" value="0">
+            <span> 명</span>
+            <p></p>
+        </div>
+        <div>
+            <p></p>
+            <button onclick="show()">계산</button>
+            <p></p>
+            <!-- 가격 출력 -->
+            <span>입장료</span>
+                <!--<input type="text" id="outputFee" value="0">-->
+                <div id="outputFee"></div>
+            <span> 원</span>
+        </div>
+
+        <div class="image-container">
+            <!-- 계산 성공 시 표시될 이미지 (예: 웃는 얼굴) -->
+            <!-- 여기에 성공 이미지 파일 경로를 넣어주세요. 예: <img id="successImage" src="success.png" alt="성공"> -->
+            <img id="successImage" src="images\smileImg.png" alt="성공" style="display: none;">
+
+            <!-- 계산 실패 시 표시될 이미지 (예: 찡그린 얼굴) -->
+            <!-- 여기에 실패 이미지 파일 경로를 넣어주세요. 예: <img id="failureImage" src="failure.png" alt="실패"> -->
+            <img id="failureImage" src="images\sadImg.png" alt="실패" style="display: none;">
+        </div>
+
+
+
+        <div> <!-- 단체할인 여부 구분 -->
+            <span>단체할인</span>
+            <input type="radio" name="personDiscount" value="yes" checked><span>예</span>
+            <input type="radio" name="personDiscount" value="no"><span>아니요</span>
+            <p></p>
+        </div>
+
+        <div> <!-- 단체할인 + 가격 -->
+            <span>성인 1인당</span> <input type="number" id="adultFee"  value="0"> <span>원</span> <p></p>
+            <span>어린이 1인당</span> <input type="number" id="childFee" value="0"> <span>원</span> <p></p>
+            <span>단체 할인 : 5명 이상 20% </span>
+        </div>
+
+        <script>
+            function show(){
+                // 이미지 초기화
+                document.getElementById('successImage').style.display = 'none';
+                document.getElementById('failureImage').style.display = 'none';
+
+                let inputAdult = document.querySelector('#inputAdult'); // 성인 인원 수
+                let inputChild = document.querySelector('#inputChild'); // 어린이 인원 수
+                let adultFee = document.querySelector('#adultFee'); // 성인 가격
+                let childFee = document.querySelector('#childFee'); // 어린이 가격
+                let outputFee = document.querySelector('#outputFee'); // 최종가격
+
+                // --- 유효성 검사 추가 시작 ---
+                // 입력값이 숫자인지 확인하고, 숫자가 아니면 경고창을 띄우고 실패 이미지를 표시
+                const adultCountVal = Number(inputAdult.value);
+                const childCountVal = Number(inputChild.value);
+                const adultFeeVal = Number(adultFee.value);
+                const childFeeVal = Number(childFee.value);
+
+                if (isNaN(adultCountVal) || isNaN(childCountVal) || isNaN(adultFeeVal) || isNaN(childFeeVal)) {
+                    alert('입력값이 숫자가 아닙니다. 숫자를 입력해주세요.');
+                    document.getElementById('failureImage').style.display = 'block'; // 실패 이미지 표시
+                    outputFee.innerText = '오류'; // 결과창에 오류 표시
+                    return; // 함수 실행 중단
+                }
+                // --- 유효성 검사 추가 끝 ---
+
+                let radios = document.getElementsByName('personDiscount');
+                let selected = Array.from(radios).find(elem => elem.checked);
+                console.log(`선택한 값 ${selected.value}`);
+
+                if(selected.value == 'yes'){
+                    //alert(`예가 선택되었어요.`);
+                    //5명 이상
+                    if(adultCountVal + childCountVal >= 5){
+                        let totalFee1 = adultCountVal * adultFeeVal +
+                                        childCountVal * childFeeVal ;
+                        
+                        let totalFee2 = totalFee1 * 0.8;
+                        console.log(`최종 가격: ${totalFee2}`);
+                        
+                        outputFee.innerText = totalFee2.toLocaleString(); // 숫자 포맷팅 추가
+                    } else{
+                        // 5명 미만
+                        let totalFee = adultCountVal * adultFeeVal +
+                                        childCountVal * childFeeVal;
+                        outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
+                    }
+
+                } else if(selected.value == 'no') {
+                    //alert(`아니오가 선택되었어요.`);
+                     let totalFee = adultCountVal * adultFeeVal +
+                            childCountVal * childFeeVal;
+                     outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
+
+                }
+
+
+                document.getElementById('successImage').style.display = 'block'; // 성공 이미지 표시
+
+            }
+
+        </script>
+
+
+    </body>
+</html>

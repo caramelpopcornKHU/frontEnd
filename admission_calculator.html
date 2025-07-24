@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입장료 계산기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            flex: 1;
+            font-weight: bold;
+            color: #555;
+        }
+        .input-group input[type="number"],
+        .input-group input[type="text"] {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: right;
+        }
+        .input-group span {
+            margin-left: 5px;
+            color: #555;
+        }
+        .radio-group {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .radio-group label {
+            margin-right: 15px;
+            color: #555;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result-group {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .price-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #777;
+        }
+        .price-info .input-group {
+            margin-bottom: 10px;
+        }
+        .image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100px;
+            height: auto;
+            display: none; /* 초기에는 숨김 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>입장료 계산기</h1>
+
+        <div class="input-group">
+            <label for="adultCount">성인 수</label>
+            <input type="number" id="adultCount" value="1" min="0">
+            <span>명</span>
+        </div>
+
+        <div class="input-group">
+            <label for="childCount">어린이 수</label>
+            <input type="number" id="childCount" value="0" min="0">
+            <span>명</span>
+        </div>
+
+        <button onclick="calculateFee()">계산</button>
+
+        <div class="result-group">
+            <p>입장료: <span id="totalFee">0</span> 원</p>
+        </div>
+
+        <div class="image-container">
+            <!-- 계산 성공 시 표시될 이미지 (예: 웃는 얼굴) -->
+            <!-- 여기에 성공 이미지 파일 경로를 넣어주세요. 예: <img id="successImage" src="success.png" alt="성공"> -->
+            <img id="successImage" src="" alt="성공" style="display: none;">
+
+            <!-- 계산 실패 시 표시될 이미지 (예: 찡그린 얼굴) -->
+            <!-- 여기에 실패 이미지 파일 경로를 넣어주세요. 예: <img id="failureImage" src="failure.png" alt="실패"> -->
+            <img id="failureImage" src="" alt="실패" style="display: none;">
+        </div>
+
+        <div class="radio-group">
+            <label>단체할인</label>
+            <input type="radio" name="groupDiscount" value="yes" id="discountYes">
+            <label for="discountYes">예</label>
+            <input type="radio" name="groupDiscount" value="no" id="discountNo" checked>
+            <label for="discountNo">아니오</label>
+        </div>
+
+        <div class="price-info">
+            <div class="input-group">
+                <label for="adultPrice">성인 1인당</label>
+                <input type="number" id="adultPrice" value="20000" min="0">
+                <span>원</span>
+            </div>
+            <div class="input-group">
+                <label for="childPrice">어린이 1인당</label>
+                <input type="number" id="childPrice" value="9900" min="0">
+                <span>원</span>
+            </div>
+            <p>단체 할인: 5명 이상 20%</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateFee() {
+            // 이미지 초기화
+            document.getElementById('successImage').style.display = 'none';
+            document.getElementById('failureImage').style.display = 'none';
+
+            // 1. 입력값 가져오기
+            const adultCount = parseInt(document.getElementById('adultCount').value);
+            const childCount = parseInt(document.getElementById('childCount').value);
+            const adultPrice = parseInt(document.getElementById('adultPrice').value);
+            const childPrice = parseInt(document.getElementById('childPrice').value);
+
+            // 2. 유효성 검사 (숫자인지 확인)
+            if (isNaN(adultCount) || isNaN(childCount) || isNaN(adultPrice) || isNaN(childPrice)) {
+                alert('입력값이 숫자가 아닙니다. 숫자를 입력해주세요.');
+                document.getElementById('failureImage').style.display = 'block'; // 실패 이미지 표시
+                document.getElementById('totalFee').textContent = '오류';
+                return; // 함수 종료
+            }
+
+            // 3. 총 인원 계산
+            const totalPeople = adultCount + childCount;
+
+            // 4. 기본 입장료 계산
+            let totalFee = (adultCount * adultPrice) + (childCount * childPrice);
+
+            // 5. 단체 할인 적용
+            const discountYesRadio = document.getElementById('discountYes');
+            const isGroupDiscountApplied = discountYesRadio.checked; // '예' 라디오 버튼이 선택되었는지 확인
+
+            if (isGroupDiscountApplied && totalPeople >= 5) {
+                totalFee = totalFee * 0.8; // 20% 할인 적용 (80%만 지불)
+            }
+
+            // 6. 결과 표시
+            document.getElementById('totalFee').textContent = totalFee.toLocaleString(); // 숫자 포맷팅
+            document.getElementById('successImage').style.display = 'block'; // 성공 이미지 표시
+        }
+    </script>
+</body>
+</html>
