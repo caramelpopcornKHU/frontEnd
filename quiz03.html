@@ -135,8 +135,8 @@
                 const currentHour = now.getHours();
                 const isNightTime = currentHour >= 18; // 오후 6시 (18시) 이후
                 if (isNightTime) {
-                 adultFeeVal = adultNightPrice;
-                 childFeeVal = childNightPrice;
+                adultFeeVal = adultNightPrice;
+                childFeeVal = childNightPrice;
                 }
 
 
@@ -208,11 +208,93 @@
                     }
                 }
                 
-                // sort 해보기
+                // sort 해보기 부분에 선택 정렬, 버블정렬, 병합정렬, 퀵정렬 구현
 
-                for(let i=0;i<numbers.length;i++){
-
+                // 1. 선택 정렬 (Selection Sort) - 배열을 직접 수정
+                function selectionSort(arr) {
+                    let n = arr.length;
+                    for(let i = 0; i < n - 1; i++) {
+                        let minIdx = i;
+                        for(let j = i + 1; j < n; j++) {
+                            if(arr[j] < arr[minIdx]) {
+                                minIdx = j;
+                            }
+                        }
+                        if(minIdx !== i) {
+                            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]]; // Swap
+                        }
+                    }
                 }
+
+                // 2. 버블 정렬 (Bubble Sort) - 배열을 직접 수정
+                function bubbleSort(arr) {
+                    let n = arr.length;
+                    for(let i = 0; i < n - 1; i++) {
+                        for(let j = 0; j < n - 1 - i; j++) {
+                            if(arr[j] > arr[j + 1]) {
+                                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap
+                            }
+                        }
+                    }
+                }
+
+                // 3. 병합 정렬 (Merge Sort) - 정렬된 새 배열을 반환
+                function mergeSort(arr) {
+                    if (arr.length <= 1) {
+                        return arr;
+                    }
+
+                    const mid = Math.floor(arr.length / 2);
+                    const left = arr.slice(0, mid);
+                    const right = arr.slice(mid);
+
+                    function merge(left, right) {
+                        let resultArray = [], leftIndex = 0, rightIndex = 0;
+                        while (leftIndex < left.length && rightIndex < right.length) {
+                            if (left[leftIndex] < right[rightIndex]) {
+                                resultArray.push(left[leftIndex]);
+                                leftIndex++;
+                            } else {
+                                resultArray.push(right[rightIndex]);
+                                rightIndex++;
+                            }
+                        }
+                        return resultArray
+                                .concat(left.slice(leftIndex))
+                                .concat(right.slice(rightIndex));
+                    }
+
+                    return merge(mergeSort(left), mergeSort(right));
+                }
+
+                // 4. 퀵 정렬 (Quick Sort) - 정렬된 새 배열을 반환
+                function quickSort(arr) {
+                    if (arr.length <= 1) {
+                        return arr;
+                    }
+
+                    const pivot = arr[arr.length - 1];
+                    const left = [];
+                    const right = [];
+
+                    for (let i = 0; i < arr.length - 1; i++) {
+                        if (arr[i] < pivot) {
+                            left.push(arr[i]);
+                        } else {
+                            right.push(arr[i]);
+                        }
+                    }
+
+                    return [...quickSort(left), pivot, ...quickSort(right)];
+                }
+                
+                // --- 정렬 알고리즘 호출 ---
+                // 아래 4가지 정렬 방법 중 하나를 선택하여 주석을 해제하고 사용하세요.
+                
+                // selectionSort(numbers);      // 선택 정렬 (배열 직접 수정)
+                // bubbleSort(numbers);         // 버블 정렬 (배열 직접 수정)
+                numbers = mergeSort(numbers); // 병합 정렬 (새 배열 반환)
+                // numbers = quickSort(numbers);  // 퀵 정렬 (새 배열 반환)
                 
 
 
