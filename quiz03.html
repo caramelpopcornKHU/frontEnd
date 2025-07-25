@@ -1,313 +1,350 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <h1>과제 01 입장료 계산기 만들기 </h1>
-        <div>
-            <p>입장료 계산기</p>
-        </div>
-        <div id="output1">
+<head>
+    <meta charset="UTF-8">
+    <title>입장료 계산기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
-        </div>
-        <div>
-            <!-- 성인 수 입력 -->
-            <span>성인 수   </span>
+        :root {
+            --primary-color: #4a90e2;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-secondary-color: #b0b0b0;
+            --error-color: #e91e63;
+            --success-color: #4caf50;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .container {
+            background-color: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary-color);
+            font-weight: 400;
+        }
+
+        .input-group input[type="number"] {
+            width: calc(100% - 2rem);
+            padding: 0.8rem 1rem;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .radio-group span {
+             color: var(--text-secondary-color);
+        }
+
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-group label {
+            background-color: #2c2c2c;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-group input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), #3a7bd5);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        #outputFee {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success-color);
+            text-align: center;
+            margin-top: 1.5rem;
+            animation: pop 0.5s ease;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .image-container img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .price-info, .night-discount, .event {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+        }
+        
+        .price-info h2, .night-discount h2, .event h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-result {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .event-result span {
+            background-color: #2c2c2c;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container animate__animated animate__fadeInUp">
+        <h1>입장료 계산기</h1>
+        <div id="output1" style="text-align:center; margin-bottom: 1.5rem; color: var(--text-secondary-color);"></div>
+
+        <div class="input-group">
+            <label for="inputAdult">성인 수</label>
             <input type="number" id="inputAdult" value="0">
-            <span> 명</span>
-            <p></p>
-            <!-- 어린이 수 입력 -->
-            <span>어린이 수</span>
+        </div>
+        <div class="input-group">
+            <label for="inputChild">어린이 수</label>
             <input type="number" id="inputChild" value="0">
-            <span> 명</span>
-            <p></p>
         </div>
-        <div>
-            <p></p>
-            <button onclick="show()">계산</button>
-            <p></p>
-            <!-- 가격 출력 -->
-            <span>입장료</span>
-                <!--<input type="text" id="outputFee" value="0">-->
-                <div id="outputFee"></div>
-            <span> 원</span>
+
+        <div class="radio-group">
+            <span>단체할인 (5명 이상 20%)</span>
+            <input type="radio" id="discountYes" name="personDiscount" value="yes" checked>
+            <label for="discountYes">예</label>
+            <input type="radio" id="discountNo" name="personDiscount" value="no">
+            <label for="discountNo">아니요</label>
         </div>
+
+        <button onclick="show()">계산하기</button>
+
+        <div id="outputFee">0 원</div>
 
         <div class="image-container">
-            <!-- 계산 성공 시 표시될 이미지 (예: 웃는 얼굴) -->
-            <!-- 여기에 성공 이미지 파일 경로를 넣어주세요. 예: <img id="successImage" src="success.png" alt="성공"> -->
-            <img id="successImage" src="images\smileImg.png" alt="성공" style="display: none;">
-
-            <!-- 계산 실패 시 표시될 이미지 (예: 찡그린 얼굴) -->
-            <!-- 여기에 실패 이미지 파일 경로를 넣어주세요. 예: <img id="failureImage" src="failure.png" alt="실패"> -->
-            <img id="failureImage" src="images\sadImg.png" alt="실패" style="display: none;">
+            <img id="successImage" src="images/smileImg.png" alt="성공" style="display: none;">
+            <img id="failureImage" src="images/sadImg.png" alt="실패" style="display: none;">
         </div>
 
-
-
-        <div> <!-- 단체할인 여부 구분 -->
-            <span>단체할인</span>
-            <input type="radio" name="personDiscount" value="yes" checked><span>예</span>
-            <input type="radio" name="personDiscount" value="no"><span>아니요</span>
-            <p></p>
+        <div class="price-info">
+            <h2>기본 요금 설정</h2>
+            <div class="input-group">
+                <label for="adultFee">성인 1인당</label>
+                <input type="number" id="adultFee" value="10000">
+            </div>
+            <div class="input-group">
+                <label for="childFee">어린이 1인당</label>
+                <input type="number" id="childFee" value="5000">
+            </div>
         </div>
 
-        <div> <!-- 단체할인 + 가격 -->
-            <span>성인 1인당</span> <input type="number" id="adultFee"  value="0"> <span>원</span> <p></p>
-            <span>어린이 1인당</span> <input type="number" id="childFee" value="0"> <span>원</span> <p></p>
-            <span>단체 할인 : 5명 이상 20% </span>
+        <div class="night-discount">
+            <h2>야간 할인 (오후 6시 이후)</h2>
+            <div class="input-group">
+                <label for="adultNight">성인 1인당</label>
+                <input type="number" id="adultNight" value="8000">
+            </div>
+            <div class="input-group">
+                <label for="childNight">어린이 1인당</label>
+                <input type="number" id="childNight" value="4000">
+            </div>
         </div>
+    </div>
 
-        <div> <!-- 야간할인 -->
-            <p>======야간 할인======</p>
-            <span>성인 1인당</span> <input type="number" id="adultNight" value="0"> <span>원</span> <p></p>
-            <span>어린이 1인당</span> <input type="number" id="childNight" value="0"> <span>원</span> <p></p>
-            <p>오후 6시부터 야간 할인이 적용됩니다.</p>
+    <div class="container animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+        <h2>🎉 스타벅스 쿠폰 추첨 이벤트 🎉</h2>
+        <div class="input-group">
+            <label for="eventPeopleNum">총 입장인원</label>
+            <input type="number" id="eventPeopleNum" value="80">
         </div>
-
-        <div>
-            <h1>이벤트</h1>
-            <span>입장인원: 총</span><input type="number" id="eventPeopleNum" value="80"><span>명</span><p></p>
-            <button onclick="eventLotto()">추첨</button>
-            <p>===============당첨자===============</p>
-            <span id="eventNum1">n번 님</span><span>--=--</span><span id="eventNum2">n번 님</span><span>--=--</span>
-            <span id="eventNum3">n번 님</span><span>--=--</span><span id="eventNum4">n번 님</span><span>--=--</span>
-            <span id="eventNum5">n번 님</span><span>--=--</span><span id="eventNum6">n번 님</span>
-            <p>입장하시는 분들은 번호표를 받으세요.</p>
-            <p>여섯 분을 추첨하여 스타벅스 쿠폰을 드립니다.</p>
+        <button onclick="eventLotto()">추첨하기</button>
+        <p style="text-align:center; color: var(--text-secondary-color); margin-top: 1.5rem;">
+            당첨되신 분들께는 스타벅스 쿠폰을 드립니다!
+        </p>
+        <div class="event-result">
+            <span id="eventNum1">?</span>
+            <span id="eventNum2">?</span>
+            <span id="eventNum3">?</span>
+            <span id="eventNum4">?</span>
+            <span id="eventNum5">?</span>
+            <span id="eventNum6">?</span>
         </div>
+    </div>
 
 
-        <!-- moment.js 라이브러리 파일이 이 HTML 파일과 같은 디렉토리에 있어야 합니다. -->
-        <!-- 만약 moment.js 파일이 없다면, https://momentjs.com/ 에서 다운로드하여 이 폴더에 넣어주세요. -->
-        <script src="moment.js"></script>
-        <script>
+    <script src="moment.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            let output1 = document.querySelector('#output1');
+            setInterval(() => {
+                let curTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                output1.innerHTML = `<p>${curTime}</p>`;
+            }, 1000)
+        })
 
-            window.addEventListener('DOMContentLoaded', () => {
-                console.log(`DOMContentLoaded 이벤트 호출됨. `);
+        function show() {
+            document.getElementById('successImage').style.display = 'none';
+            document.getElementById('failureImage').style.display = 'none';
 
-                // 현재 시간 표시하기
-                let output1 = document.querySelector('#output1');
-                setInterval(() => {
-                    
-                    let curTime = moment().format('YYYY-MM-DD HH:mm:ss');
-                    output1.innerHTML = `<p>${curTime}</p>`;
+            const adultCount = parseInt(document.getElementById('inputAdult').value);
+            const childCount = parseInt(document.getElementById('inputChild').value);
+            let adultPrice = parseInt(document.getElementById('adultFee').value);
+            let childPrice = parseInt(document.getElementById('childFee').value);
+            const adultNightPrice = parseInt(document.getElementById('adultNight').value);
+            const childNightPrice = parseInt(document.getElementById('childNight').value);
+            const outputFee = document.getElementById('outputFee');
 
-                }, 1000) // 1000이니까 1초마다 보여줄게
-            })
-
-            function show(){
-                // 이미지 초기화
-                document.getElementById('successImage').style.display = 'none';
-                document.getElementById('failureImage').style.display = 'none';
-
-                let inputAdult = document.querySelector('#inputAdult'); // 성인 인원 수
-                let inputChild = document.querySelector('#inputChild'); // 어린이 인원 수
-                let adultFee = document.querySelector('#adultFee'); // 성인 가격
-                let childFee = document.querySelector('#childFee'); // 어린이 가격
-                let outputFee = document.querySelector('#outputFee'); // 최종가격
-
-                // Gemini의 도움 이렇게 값을 넘기면 좋더라 
-                const adultNightPrice = parseInt(document.getElementById('adultNight').value);
-                const childNightPrice = parseInt(document.getElementById('childNight').value);
-
-
-
-                // --- 유효성 검사 추가 시작 ---
-                // 입력값이 숫자인지 확인하고, 숫자가 아니면 경고창을 띄우고 실패 이미지를 표시
-                const adultCountVal = Number(inputAdult.value);
-                const childCountVal = Number(inputChild.value);
-                let adultFeeVal = Number(adultFee.value);
-                let childFeeVal = Number(childFee.value);
-
-                if (isNaN(adultCountVal) || isNaN(childCountVal) || isNaN(adultFeeVal) || isNaN(childFeeVal)|| isNaN(adultNightPrice) || isNaN(childNightPrice)) {
-                    alert('입력값이 숫자가 아닙니다. 숫자를 입력해주세요.');
-                    document.getElementById('failureImage').style.display = 'block'; // 실패 이미지 표시
-                    outputFee.innerText = '오류'; // 결과창에 오류 표시
-                    return; // 함수 실행 중단
-                }
-                // --- 유효성 검사 추가 끝 ---
-
-
-                // 3. 야간 할인 적용 여부 확인 (오후 6시 이후)
-                const now = new Date();
-                const currentHour = now.getHours();
-                const isNightTime = currentHour >= 18; // 오후 6시 (18시) 이후
-                if (isNightTime) {
-                adultFeeVal = adultNightPrice;
-                childFeeVal = childNightPrice;
-                }
-
-
-                let radios = document.getElementsByName('personDiscount');
-                let selected = Array.from(radios).find(elem => elem.checked);
-                console.log(`선택한 값 ${selected.value}`);
-
-                if(selected.value == 'yes'){
-                    //alert(`예가 선택되었어요.`);
-                    //5명 이상
-                    if(adultCountVal + childCountVal >= 5){
-                        let totalFee1 = adultCountVal * adultFeeVal +
-                                        childCountVal * childFeeVal ;
-                        
-                        let totalFee2 = totalFee1 * 0.8;
-                        console.log(`최종 가격: ${totalFee2}`);
-                        
-                        outputFee.innerText = totalFee2.toLocaleString(); // 숫자 포맷팅 추가
-                    } else{
-                        // 5명 미만
-                        let totalFee = adultCountVal * adultFeeVal +
-                                        childCountVal * childFeeVal;
-                        outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
-                    }
-
-                } else if(selected.value == 'no') {
-                    //alert(`아니오가 선택되었어요.`);
-                     let totalFee = adultCountVal * adultFeeVal +
-                            childCountVal * childFeeVal;
-                     outputFee.innerText = totalFee.toLocaleString(); // 숫자 포맷팅 추가
-
-                }
-
-
-                document.getElementById('successImage').style.display = 'block'; // 성공 이미지 표시
-
+            if (isNaN(adultCount) || isNaN(childCount) || isNaN(adultPrice) || isNaN(childPrice) || isNaN(adultNightPrice) || isNaN(childNightPrice)) {
+                alert('유효한 숫자를 입력해주세요.');
+                document.getElementById('failureImage').style.display = 'block';
+                outputFee.innerText = '오류';
+                return;
             }
-
-            function eventLotto(){
-                // 1번~6번 당첨자용 <span> 칸 불러오기
             
-                
-                let eventPeopleNum = document.querySelector('#eventPeopleNum');
-                let eventNum1 = document.querySelector('#eventNum1');
-                let eventNum2 = document.querySelector('#eventNum2');
-                let eventNum3 = document.querySelector('#eventNum3');
-                let eventNum4 = document.querySelector('#eventNum4');
-                let eventNum5 = document.querySelector('#eventNum5');
-                let eventNum6 = document.querySelector('#eventNum6');
-
-                // 이벤트 참여하는 사람의 수는 변하지 않으니까 const로 선언
-                const eventPeopleNumVal = Number(eventPeopleNum.value);
-
-                let numbers = [];
-
-                // 6명 뽑기
-                while(numbers.length < 6){
-                    // Math.random() = 0~1사이 값 곱하기 이벤트 참여 인원
-                    // floor는 소수점 버림 -> 만약 0.xx나오면 0이 뽑힘
-                    // 따라서, 1을 더해줘야함
-
-                    // rand라는 상자에 숫자뽑기
-                    let rand = Math.floor(Math.random() * eventPeopleNumVal) + 1;
-                    
-                    // 숫자 리스트에 rand로 뽑은 숫자가 있냐? includes
-                    // 없는거( ! )만 넣을게 -> push
-                    if(!numbers.includes(rand)){
-                        numbers.push(rand);
-                    }
-                }
-                
-                // sort 해보기 부분에 선택 정렬, 버블정렬, 병합정렬, 퀵정렬 구현
-
-                // 1. 선택 정렬 (Selection Sort) - 배열을 직접 수정
-                function selectionSort(arr) {
-                    let n = arr.length;
-                    for(let i = 0; i < n - 1; i++) {
-                        let minIdx = i;
-                        for(let j = i + 1; j < n; j++) {
-                            if(arr[j] < arr[minIdx]) {
-                                minIdx = j;
-                            }
-                        }
-                        if(minIdx !== i) {
-                            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]]; // Swap
-                        }
-                    }
-                }
-
-                // 2. 버블 정렬 (Bubble Sort) - 배열을 직접 수정
-                function bubbleSort(arr) {
-                    let n = arr.length;
-                    for(let i = 0; i < n - 1; i++) {
-                        for(let j = 0; j < n - 1 - i; j++) {
-                            if(arr[j] > arr[j + 1]) {
-                                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap
-                            }
-                        }
-                    }
-                }
-
-                // 3. 병합 정렬 (Merge Sort) - 정렬된 새 배열을 반환
-                function mergeSort(arr) {
-                    if (arr.length <= 1) {
-                        return arr;
-                    }
-
-                    const mid = Math.floor(arr.length / 2);
-                    const left = arr.slice(0, mid);
-                    const right = arr.slice(mid);
-
-                    function merge(left, right) {
-                        let resultArray = [], leftIndex = 0, rightIndex = 0;
-                        while (leftIndex < left.length && rightIndex < right.length) {
-                            if (left[leftIndex] < right[rightIndex]) {
-                                resultArray.push(left[leftIndex]);
-                                leftIndex++;
-                            } else {
-                                resultArray.push(right[rightIndex]);
-                                rightIndex++;
-                            }
-                        }
-                        return resultArray
-                                .concat(left.slice(leftIndex))
-                                .concat(right.slice(rightIndex));
-                    }
-
-                    return merge(mergeSort(left), mergeSort(right));
-                }
-
-                // 4. 퀵 정렬 (Quick Sort) - 정렬된 새 배열을 반환
-                function quickSort(arr) {
-                    if (arr.length <= 1) {
-                        return arr;
-                    }
-
-                    const pivot = arr[arr.length - 1];
-                    const left = [];
-                    const right = [];
-
-                    for (let i = 0; i < arr.length - 1; i++) {
-                        if (arr[i] < pivot) {
-                            left.push(arr[i]);
-                        } else {
-                            right.push(arr[i]);
-                        }
-                    }
-
-                    return [...quickSort(left), pivot, ...quickSort(right)];
-                }
-                
-                // --- 정렬 알고리즘 호출 ---
-                // 아래 4가지 정렬 방법 중 하나를 선택하여 주석을 해제하고 사용하세요.
-                
-                // selectionSort(numbers);      // 선택 정렬 (배열 직접 수정)
-                // bubbleSort(numbers);         // 버블 정렬 (배열 직접 수정)
-                numbers = mergeSort(numbers); // 병합 정렬 (새 배열 반환)
-                // numbers = quickSort(numbers);  // 퀵 정렬 (새 배열 반환)
-                
-
-
-                // 마지막 당첨자 표현
-                eventNum1.innerHTML = `<span>${numbers[0]}번님</span>`;
-                eventNum2.innerHTML = `<span>${numbers[1]}번님</span>`;
-                eventNum3.innerHTML = `<span>${numbers[2]}번님</span>`;
-                eventNum4.innerHTML = `<span>${numbers[3]}번님</span>`;
-                eventNum5.innerHTML = `<span>${numbers[4]}번님</span>`;
-                eventNum6.innerHTML = `<span>${numbers[5]}번님</span>`;
+            const now = new Date();
+            const isNightTime = now.getHours() >= 18;
+            if (isNightTime) {
+                adultPrice = adultNightPrice;
+                childPrice = childNightPrice;
             }
-        </script>
 
+            let totalFee = (adultCount * adultPrice) + (childCount * childPrice);
+            
+            const isDiscount = document.getElementById('discountYes').checked;
+            if (isDiscount && (adultCount + childCount >= 5)) {
+                totalFee *= 0.8;
+            }
 
-    </body>
+            outputFee.innerText = `${totalFee.toLocaleString()} 원`;
+            outputFee.classList.add('animate__animated', 'animate__tada');
+            document.getElementById('successImage').style.display = 'block';
+            
+            outputFee.addEventListener('animationend', () => {
+                outputFee.classList.remove('animate__animated', 'animate__tada');
+            });
+        }
+
+        function eventLotto() {
+            const eventPeopleNum = parseInt(document.getElementById('eventPeopleNum').value);
+            if (isNaN(eventPeopleNum) || eventPeopleNum < 6) {
+                alert('추첨 인원은 6명 이상이어야 합니다.');
+                return;
+            }
+
+            let numbers = new Set();
+            while (numbers.size < 6) {
+                let rand = Math.floor(Math.random() * eventPeopleNum) + 1;
+                numbers.add(rand);
+            }
+
+            const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
+
+            for (let i = 0; i < 6; i++) {
+                const el = document.getElementById(`eventNum${i + 1}`);
+                el.innerText = `${sortedNumbers[i]}번`;
+                el.classList.add('animate__animated', 'animate__bounceIn');
+                 el.addEventListener('animationend', () => {
+                    el.classList.remove('animate__animated', 'animate__bounceIn');
+                });
+            }
+        }
+    </script>
+</body>
 </html>

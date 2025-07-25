@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>로그인 페이지</title>
+    </head>
+    <body>
+
+        <h1><%= message %></h1>
+        
+        <h1><%= name %>님</h1> 
+
+        <div>
+            <button onclick="goBack()">돌아가기</button>
+        </div>
+
+        <script>
+            function goBack(){
+                console.log(`goBack함수 실행됨`);
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const username = urlParams.get('username');
+                const form = document.createElement('form');
+                form.setAttribute('action','/page/menu');
+
+                form.setAttribute('method', 'get');
+                const data1 = document.createElement('input'); // ← 여기가 핵심!
+                data1.setAttribute('type', 'hidden');
+                data1.setAttribute('name', 'username');
+                data1.setAttribute('value', username);
+                form.appendChild(data1);
+                
+                // prevpage 정보
+                const data2 = document.createElement('input');
+                data2.setAttribute('type','hidden');
+                data2.setAttribute('name', 'prevPage');
+                data2.setAttribute('value', '고객 관리');
+                form.appendChild(data2);
+                
+                document.body.appendChild(form);
+
+                form.submit();
+            }
+            
+        </script>
+        <!--
+        <a href="/page/second?name=홍길동2">두번째 페이지로</a> -->
+
+    </body>
+    
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>로그인 페이지</title>
+    </head>
+    <body>
+
+        <h1><% name %></h1>
+        <h3> 로그인 페이지 </h3>
+        <h1><%= message %></h1>
+        <p>현재 시간: <%= date %></p>
+        <p>환영합니다</p>
+
+        <div>
+            <!--
+            <form action = "/page/first" method="get">
+                <span>ID   :</span>   <input type="text" name="username" value=""><p></p>
+                <span>PASSWORD:</span><input type="password" name="password" value=""><p></p>
+                <button onclick="">로그인</button>
+            </form> -->
+            
+        </div>
+        <div>
+            <span>ID   :</span>   <input type="text" id="input1"><p></p>
+            <span>PW   :</span>   <input type="text" id="input2"><p></p>
+
+            <button onclick="login()">로그인</button>
+        </div>
+
+        <script>
+            function login(){
+                console.log(`login함수 실행됨`);
+
+                const form = document.createElement('form');
+                form.setAttribute('action','/page/menu');
+                form.setAttribute('method','get');
+
+                const input1 = document.querySelector('#input1');
+                const input2 = document.querySelector('#input2');
+
+                const data1 = document.createElement('input');
+                data1.setAttribute('type','hidden');
+                data1.setAttribute('name','username');
+                data1.setAttribute('value',input1.value);
+                form.appendChild(data1);
+
+                const data2 = document.createElement('input');
+                data2.setAttribute('type','hidden');
+                data2.setAttribute('name','password');
+                data2.setAttribute('value',input2.value);
+                form.appendChild(data2);
+
+                document.body.appendChild(form);
+
+                form.submit();
+            }
+        </script>
+        <!--
+        <a href="/page/second?name=홍길동2">두번째 페이지로</a> -->
+
+    </body>
+    
+</html>
