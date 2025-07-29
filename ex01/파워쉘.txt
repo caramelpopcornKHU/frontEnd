@@ -1,0 +1,76 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+새로운 크로스 플랫폼 PowerShell 사용 https://aka.ms/pscore6
+
+PS C:\Users\LX> cd C:\Users\LX\vue-training
+PS C:\Users\LX\vue-training> npm.cmd create vue@latest
+Need to install the following packages:
+create-vue@3.18.0
+Ok to proceed? (y) y
+
+
+> npx
+> create-vue
+
+T  Vue.js - The Progressive JavaScript Framework
+|
+o  Project name (target directory):
+|  ex01
+|
+*  Select features to include in your project: (↑/↓ to navigate, space to select, a to toggle alo  Select features to include in your project: (↑/↓ to navigate, space to select, a to toggle all,
+enter to confirm)
+|  Router (SPA development), Pinia (state management)
+|
+o  Select experimental features to include in your project: (↑/↓ to navigate, space to select, a
+to toggle all, enter to confirm)
+|  none
+|
+o  Skip all example code and start with a blank Vue project?
+|  No
+
+Scaffolding project in C:\Users\LX\vue-training\ex01...
+|
+—  Done. Now run:
+
+   cd ex01
+   npm install
+   npm run dev
+
+| Optional: Initialize Git in your project directory with:
+
+   git init && git add -A && git commit -m "initial commit"
+
+PS C:\Users\LX\vue-training> cd ex01
+PS C:\Users\LX\vue-training\ex01> npm.cmd install
+
+added 152 packages, and audited 153 packages in 13s
+
+47 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+  VITE v7.0.6  ready in 726 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  Vue DevTools: Open http://localhost:5173/__devtools__/ as a separate window
+  ➜  Vue DevTools: Press Alt(⌥)+Shift(⇧)+D in App to toggle the Vue DevTools
+  ➜  press h + enter to show help
+오후 3:52:55 [vite] (client) hmr update /src/App.vue
+오후 3:54:32 [vite] (client) hmr update /src/views/HomeView.vue
+오후 3:56:11 [vite] (client) hmr update /src/App.vue
+오후 3:56:50 [vite] (client) hmr update /src/views/AboutView.vue
+오후 3:57:44 [vite] (client) hmr update /src/views/HomeView.vue
+오후 3:58:38 [vite] (client) hmr update /src/App.vue
+오후 3:59:30 [vite] (client) hmr update /src/App.vue (x2)
+
+
+
+
+
+
+
+
+
