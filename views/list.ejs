@@ -1,35 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>고객 관리</title>
-    </head>
-    <body>
 
-        <h1>고객 리스트</h1>
+<head>
+    <meta charset="UTF-8">
+    <title>고객 관리</title>
+</head>
 
-        <div>
-            <table>
+<body>
+
+    <h1>고객 리스트</h1>
+
+    <div>
+        <table>
+            <tr> <!-- table row 테이블의 한 행  -->
+                <th>이름</th>
+                <th>나이</th>
+                <th>전화번호</th> <!-- table header 헤더 셀-->
+                <th>삭제</th>
+            </tr>
+
+            <% for (let i=0; i < persons.length; i++) { %>
                 <tr>
-                    <th>이름</th>
-                    <th>나이</th>
-                    <th>전화번호</th>
+                    <td> <!--  table data 일반 셀 -->
+                        <%= persons[i].name %>
+                    </td>
+                    <td>
+                        <%= persons[i].age %>
+                    </td>
+                    <td>
+                        <%= persons[i].mobile %>
+                    </td>
+                    <td><a href="/person/update?id=<%= persons[i].id %>&name=<%= persons[i].name %>&age=<%= persons[i].age %>&mobile=<%= persons[i].mobile %>">수정</a></td>
+                    <td><a href="/person/delete?id=<%= persons[i].id %>">삭제</a></td>
                 </tr>
-
-                <% for (let i = 0; i < persons.length; i++) { %>
-                    <tr>
-                        <td><%= persons[i].name %></td>
-                        <td><%= persons[i].age %></td>
-                        <td><%= persons[i].mobile %></td>
-                    </tr>
                 <% } %>
-            </table>
-        </div>
- 
-        <div>
-            <a href="/page/add">추가</a>
-        </div>
-        
+        </table>
+    </div>
 
-    </body>
+    <div>
+        <a href="/page/add">추가</a>
+    </div>
+
+
+</body>
+
 </html>

@@ -59,13 +59,13 @@ router.route('/page/list').get(async (req, res) => {
 router.route('/page/add').get(async (req, res) => {
     console.log('/page/add 요청됨');
 
-    
+
     try {
-        
+
 
         // 7. 뷰 템플릿에 데이터 전달 및 렌더링
         const context = {
-            
+
         };
 
         req.app.render('add', context, (err, html) => {
@@ -77,7 +77,7 @@ router.route('/page/add').get(async (req, res) => {
         });
     } catch (err) {
         console.error(`요청 처리 중 에러 -> ${err}`);
-    } 
+    }
 });
 
 
@@ -97,7 +97,7 @@ router.route('/page/insert').get(async (req, res) => {
         let rows = await conn.query(sql, []); // SQL 쿼리 실행
 
         sql = `select id, name, age, mobile from test.person`;
-        rows = await conn.query(sql,[]);
+        rows = await conn.query(sql, []);
 
         // 7. 뷰 템플릿에 데이터 전달 및 렌더링
         const context = {

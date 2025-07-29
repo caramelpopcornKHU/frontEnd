@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>고객 추가</title>
+    </head>
+    <body>
+        <h1>고객 추가</h1>
+        <div>
+            <form action="/person/saveClient" method="get">
+                
+                
+                <span>이름     </span> <input type="text" name="name" value=""> <p></p>
+                <span>나이     </span> <input type="text" name="age" value=""> <p></p>
+                <span>전화번호 </span> <input type="text" name="mobile" value=""> <p></p>
+                <button>저장</button>
+            </form>
+            <form action="/person/list" method="get" >
+                <button>취소</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -41,12 +41,12 @@ router.route('/page/list').get(async (req, res) => {
                 console.error(`뷰 처리 중 에러 -> ${err}`);
             }
 
-            res.writeHead(200, {'Content-Type':'text/html;charset=utf8'});
+            res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' });
             res.end(html);
 
         })
 
-    } catch(err) {
+    } catch (err) {
         console.error(`요청 처리 중 에러 -> ${err}`);
     } finally {
         if (conn) { conn.end(); }
@@ -56,11 +56,11 @@ router.route('/page/list').get(async (req, res) => {
 
 router.route('/page/add').get(async (req, res) => {
     console.log('/page/add 요청됨');
- 
+
     try {
-        
+
         const context = {
-             
+
         }
 
         req.app.render('add', context, (err, html) => {
@@ -68,14 +68,14 @@ router.route('/page/add').get(async (req, res) => {
                 console.error(`뷰 처리 중 에러 -> ${err}`);
             }
 
-            res.writeHead(200, {'Content-Type':'text/html;charset=utf8'});
+            res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' });
             res.end(html);
 
         })
 
-    } catch(err) {
+    } catch (err) {
         console.error(`요청 처리 중 에러 -> ${err}`);
-    } 
+    }
 
 })
 
@@ -105,12 +105,12 @@ router.route('/page/insert').get(async (req, res) => {
                 console.error(`뷰 처리 중 에러 -> ${err}`);
             }
 
-            res.writeHead(200, {'Content-Type':'text/html;charset=utf8'});
+            res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' });
             res.end(html);
 
         })
 
-    } catch(err) {
+    } catch (err) {
         console.error(`요청 처리 중 에러 -> ${err}`);
     } finally {
         if (conn) { conn.end(); }
