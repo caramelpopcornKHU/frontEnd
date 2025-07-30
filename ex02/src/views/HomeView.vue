@@ -21,6 +21,8 @@
 
     <div>
       <p>{{ name }}</p>
+      <p>{{ age }}</p>
+      
       <p>{{ output1 }}</p>
     </div>
 
@@ -42,6 +44,7 @@ import { ref } from 'vue';
 
 
 const name = ref('');
+const age = ref('');
 
 const output1 = ref(`결과 : `);
 
