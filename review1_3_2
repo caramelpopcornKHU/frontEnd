@@ -1,8 +1,0 @@
-let add = (a, b, callback) => {
-    let result = a + b;
-    callback(result);
-}
-
-add(5,7,() => {
-    console.log(`qqqq`)
-});
